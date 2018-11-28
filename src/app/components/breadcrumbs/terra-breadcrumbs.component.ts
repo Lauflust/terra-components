@@ -24,6 +24,7 @@ export class TerraBreadcrumbsComponent
 
     protected helperTooltip:string;
     protected isHelperTooltipDisabled:boolean;
+    private currentSelectedBreadCrumb:TerraBreadcrumb;
 
     constructor(public readonly breadcrumbsService:TerraBreadcrumbsService,
                 private activatedRoute:ActivatedRoute,
@@ -85,9 +86,14 @@ export class TerraBreadcrumbsComponent
     {
         let isRouteActive:boolean = this.breadcrumbsService.checkActiveRoute(bcc);
 
-        if(!isNullOrUndefined(container) && isRouteActive)
+        if(!isNullOrUndefined(container) && isRouteActive && this.currentSelectedBreadCrumb !== bcc)
         {
             container.scrollIntoView();
+        }
+
+        if(isRouteActive)
+        {
+            this.currentSelectedBreadCrumb = bcc;
         }
 
         return isRouteActive;
