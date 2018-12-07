@@ -78,7 +78,6 @@ export class TerraDataTableComponent<T, P> extends TerraBaseTable<T> implements 
     protected readonly refType:{} = TerraHrefTypeEnum;
     protected readonly checkboxColumnWidth:number = 25;
 
-    private cell:HTMLElement;
     private mousePosOnDragStart:number;
     private cellWidthOnDragStart:number;
 
@@ -300,13 +299,13 @@ export class TerraDataTableComponent<T, P> extends TerraBaseTable<T> implements 
         return this.isSorted(header, TerraDataTableSortOrderEnum.descending);
     }
 
-    protected onDragStart(event:DragEvent):void
+    protected onDragStart(event:DragEvent, header:TerraDataTableHeaderCellInterface):void
     {
-        this.cellWidthOnDragStart = this.cell.clientWidth;
+        this.cellWidthOnDragStart = header.width;
         this.mousePosOnDragStart = event.clientX;
     }
 
-    protected onDrag(event:DragEvent):void
+    protected onDrag(event:DragEvent, header:TerraDataTableHeaderCellInterface):void
     {
         let mousePosOnDrag:number = event.clientX;
         let mousePosDiff:number = this.mousePosOnDragStart - mousePosOnDrag;
@@ -315,14 +314,13 @@ export class TerraDataTableComponent<T, P> extends TerraBaseTable<T> implements 
 
         if(newWidth > 0)
         {
-            this.cell.style.width = newWidth + 'px';
+            header.width = newWidth;
         }
     }
 
     protected onDragEnd():void
     {
         this.cellWidthOnDragStart = null;
-        this.cell = null;
         this.mousePosOnDragStart = null;
     }
 }

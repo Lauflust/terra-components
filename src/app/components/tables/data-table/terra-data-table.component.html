@@ -22,6 +22,7 @@
             </th>
             <ng-template ngFor let-header [ngForOf]="inputHeaderList">
                 <th *ngIf="!header.isHidden"
+                    [width]="header.width"
                     [ngStyle]="{ 'text-align': getTextAlign(header) }"
                     [class.sortable]="isSortable(header)"
                     (click)="columnHeaderClicked.emit(header)">
@@ -34,7 +35,7 @@
                         </span>
                     </span>
     
-                    <span *ngIf="isResizable" class="resizer" draggable="true" (dragstart)="onDragStart($event)" (drag)="onDrag($event)" (dragend)="onDragEnd()">
+                    <span *ngIf="isResizable" class="resizer" draggable="true" (dragstart)="onDragStart($event, header)" (drag)="onDrag($event, header)" (dragend)="onDragEnd()">
                     </span>
                 </th>
             </ng-template>
