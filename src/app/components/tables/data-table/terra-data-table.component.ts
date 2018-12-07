@@ -70,10 +70,17 @@ export class TerraDataTableComponent<T, P> extends TerraBaseTable<T> implements 
     @Input()
     public inputContextMenu:Array<TerraDataTableContextMenuEntryInterface<T>> = [];
 
+    @Input()
+    public isResizable:boolean = false;
+
     protected columnHeaderClicked:EventEmitter<TerraDataTableHeaderCellInterface> = new EventEmitter<TerraDataTableHeaderCellInterface>();
 
     protected readonly refType:{} = TerraHrefTypeEnum;
     protected readonly checkboxColumnWidth:number = 25;
+
+    private cell:HTMLElement;
+    private mousePosOnDragStart:number;
+    private cellWidthOnDragStart:number;
 
     protected get rowList():Array<TerraDataTableRowInterface<T>>
     {
@@ -291,5 +298,31 @@ export class TerraDataTableComponent<T, P> extends TerraBaseTable<T> implements 
     protected isSortedDesc(header:TerraDataTableHeaderCellInterface):boolean
     {
         return this.isSorted(header, TerraDataTableSortOrderEnum.descending);
+    }
+
+    protected onDragStart(event:DragEvent):void
+    {
+        this.cellWidthOnDragStart = this.cell.clientWidth;
+        this.mousePosOnDragStart = event.clientX;
+    }
+
+    protected onDrag(event:DragEvent):void
+    {
+        let mousePosOnDrag:number = event.clientX;
+        let mousePosDiff:number = this.mousePosOnDragStart - mousePosOnDrag;
+
+        let newWidth:number = this.cellWidthOnDragStart - mousePosDiff;
+
+        if(newWidth > 0)
+        {
+            this.cell.style.width = newWidth + 'px';
+        }
+    }
+
+    protected onDragEnd():void
+    {
+        this.cellWidthOnDragStart = null;
+        this.cell = null;
+        this.mousePosOnDragStart = null;
     }
 }

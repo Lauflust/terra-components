@@ -3,7 +3,7 @@
     margin: var(--space-container);
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
-    width: auto;
+    //width: auto;
     --no-result-margin: 0; //in case of a no-result page placed in a table to avoid doubled margins
     
     table
@@ -24,6 +24,8 @@
         }
         &.table
         {
+            width: auto;
+            max-width: none;
             &[tabindex]
             {
                 outline: none;
@@ -40,14 +42,43 @@
                         padding: var(--table-head-th-padding, var(--space-md));
                         transition: padding var(--transition-lg);
                         border: none;
+                        min-width: 50px;
+                        
                         &.sortable
                         {
                             cursor: pointer;
                         }
-                        span
+    
+                        span:not(.resizer)
                         {
                             font-size: var(--font-size-3);
                             @include font-rendering;
+                        }
+    
+                        &:not(:last-child) .resizer
+                        {
+                            display: inline-block;
+                            height: 20px;
+                            border-style: solid;
+                            border-width: 5px 2px;
+                            -moz-user-select: none;
+                            -webkit-user-select: none;
+                            -ms-user-select: none;
+                            user-select: none;
+                            float: right;
+                            border-radius: var(--border-radius);
+                            visibility: hidden;
+                            
+                            &:hover
+                            {
+                                cursor: col-resize;
+                                border-color: var(--color-active);
+                            }
+                        }
+    
+                        &:not(:last-child):hover > span.resizer
+                        {
+                            visibility: visible;
                         }
                     }
                 }
